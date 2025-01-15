@@ -48,3 +48,4 @@ The goal of this project is to provide an intuitive platform for generating vide
 
 ## Screenshot
 
+![AI-Powered Video Script Generator](https://drive.google.com/uc?id=1n2AX8Ec3r6aDUILtgi6NN19oQ986j8Yx)
