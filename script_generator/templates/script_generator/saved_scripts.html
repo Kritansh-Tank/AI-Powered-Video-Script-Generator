@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Saved Scripts</title>
+  </head>
+  <body class="bg-gray-100 p-4">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+      <h1 class="text-2xl font-bold mb-4">Saved Scripts</h1>
+
+      <!-- Search Bar -->
+      <form method="GET" class="mb-4">
+        <input
+          type="text"
+          name="search"
+          placeholder="Search scripts..."
+          value="{{ search_query }}"
+          class="border p-2 rounded w-3/4"
+        />
+        <button
+          type="submit"
+          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Search
+        </button>
+      </form>
+
+      <!-- Script List -->
+      <ul>
+        {% for script in scripts %}
+        <li class="mb-4 border-b pb-2">
+          <h2 class="text-lg font-semibold">Prompt:</h2>
+          <p class="bg-gray-100 p-2 rounded">{{ script.prompt }}</p>
+          <h2 class="text-lg font-semibold mt-2">Generated Script:</h2>
+          <p class="bg-gray-100 p-2 rounded">{{ script.generated_script }}</p>
+          <p class="text-sm text-gray-500 mt-2">
+            Saved on: {{ script.created_at }}
+          </p>
+          <div class="mt-4">
+            <a
+              href="{% url 'export_script' script.id 'txt' %}"
+              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            >
+              Download as TXT
+            </a>
+            <a
+              href="{% url 'export_script' script.id 'pdf' %}"
+              class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition ml-2"
+            >
+              Download as PDF
+            </a>
+          </div>
+        </li>
+        {% empty %}
+        <p class="text-gray-600">No scripts found.</p>
+        {% endfor %}
+      </ul>
+
+      <!-- Pagination Controls -->
+      <div class="mt-4 flex justify-center">
+        {% if scripts.has_previous %}
+        <a
+          href="?page={{ scripts.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
+          class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition"
+        >
+          Previous
+        </a>
+        {% endif %}
+        <span class="px-4 py-2"
+          >{{ scripts.number }} of {{ scripts.paginator.num_pages }}</span
+        >
+        {% if scripts.has_next %}
+        <a
+          href="?page={{ scripts.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}"
+          class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition"
+        >
+          Next
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
